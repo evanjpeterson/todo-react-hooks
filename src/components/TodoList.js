@@ -15,12 +15,14 @@ export const TodoList = () => {
           <Todo
             todo={todo}
             onTodoEdit={(newTodo) => {
-              const newTodos = [
+              setTodos([
                 ...todos.slice(0, index),
                 newTodo,
                 ...todos.slice(index + 1),
-              ];
-              setTodos(newTodos);
+              ]);
+            }}
+            onTodoDelete={() => {
+              setTodos([...todos.slice(0, index), ...todos.slice(index + 1)]);
             }}
           />
         </li>

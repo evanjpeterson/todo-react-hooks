@@ -1,6 +1,6 @@
 import { useState, useEffect, useRef } from "react";
 
-export const Todo = ({ todo, onTodoEdit }) => {
+export const Todo = ({ todo, onTodoEdit, onTodoDelete }) => {
   const { title, completed } = todo;
   const [isEditing, setIsEditing] = useState(title === "");
   const titleInputEl = useRef(null);
@@ -9,7 +9,11 @@ export const Todo = ({ todo, onTodoEdit }) => {
     if (isEditing) {
       titleInputEl.current.focus();
     }
-  }, [isEditing]);
+
+    if (!isEditing && title === "") {
+      onTodoDelete();
+    }
+  });
 
   const toggleCompleted = () =>
     onTodoEdit({
@@ -21,9 +25,12 @@ export const Todo = ({ todo, onTodoEdit }) => {
     setIsEditing(true);
   };
 
-  const exitEditMode = (e) => {
+  const exitEditMode = () => {
     setIsEditing(false);
+  };
 
+  const handleEditModeSubmit = (e) => {
+    exitEditMode();
     e.preventDefault();
   };
 
@@ -36,20 +43,26 @@ export const Todo = ({ todo, onTodoEdit }) => {
 
   return (
     <div>
-      <div onClick={toggleCompleted}>{completed ? "✅  " : "🚫 "}</div>
+      <div onClick={toggleCompleted}>{completed ? "🙆‍♂️ " : "️️🙅‍♀️ "}</div>
       {isEditing ? (
-        <form onSubmit={exitEditMode}>
+        <form onSubmit={handleEditModeSubmit}>
           <input
             type="text"
             value={title}
             onChange={editTitle}
             onBlur={exitEditMode}
+            onKeyUp={({ key }) => {
+              if (key === "Escape") {
+                exitEditMode();
+              }
+            }}
             ref={titleInputEl}
           />
         </form>
       ) : (
         <span onClick={enterEditMode}>{title || "<no title>"}</span>
       )}
+      <div onClick={onTodoDelete}>{"🗑"}</div>
     </div>
   );
 };
