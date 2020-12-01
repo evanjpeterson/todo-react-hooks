@@ -1,4 +1,5 @@
 import { Todo } from "./Todo";
+import { AddTodo } from "./AddTodo";
 import { useTodoContext } from "./TodoProvider";
 
 export const TodoList = () => {
@@ -7,24 +8,23 @@ export const TodoList = () => {
   return (
     <ul>
       <li>
-        {todos.map((todo, index) => (
+        <AddTodo />
+      </li>
+      {todos.map((todo, index) => (
+        <li key={todo.id}>
           <Todo
-            key={index}
-            item={todo}
-            onCompletedToggle={(completed) => {
+            todo={todo}
+            onTodoEdit={(newTodo) => {
               const newTodos = [
                 ...todos.slice(0, index),
-                {
-                  ...todo,
-                  completed,
-                },
+                newTodo,
                 ...todos.slice(index + 1),
               ];
               setTodos(newTodos);
             }}
           />
-        ))}
-      </li>
+        </li>
+      ))}
     </ul>
   );
 };

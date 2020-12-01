@@ -1,7 +1,9 @@
+import { v4 as uuid } from "uuid";
 import React, { useState, useEffect, useContext } from "react";
 
 const sampleTodos = [
   {
+    id: uuid(),
     title: "Finish the app",
     completed: false,
     deprioritized: false,
