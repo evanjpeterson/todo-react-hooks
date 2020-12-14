@@ -1,5 +1,8 @@
 import { v4 as uuid } from "uuid";
-import React, { useState, useEffect, useContext } from "react";
+import React, { useState, useContext } from "react";
+import { useDebouncedEffect, useMountEffect } from "../utils";
+
+const LOCAL_STORAGE_KEY = "todo-react-hooks-local-storage";
 
 const sampleTodos = [
   {
@@ -13,12 +16,24 @@ const sampleTodos = [
 const TodoContext = React.createContext(null);
 
 export const TodoProvider = ({ children }) => {
-  const [todos, setTodos] = useState(sampleTodos);
+  const [todos, setTodos] = useState([]);
 
-  useEffect(() => {
-    // TODO: Fetch from local storage
-    // setTodos(...)
-  }, []);
+  useMountEffect(() => {
+    try {
+      const storedTodos = localStorage.getItem(LOCAL_STORAGE_KEY);
+      setTodos(JSON.parse(storedTodos) || sampleTodos);
+    } catch {
+      // JSON.parse() failed, no need to set anything for now
+    }
+  });
+
+  useDebouncedEffect(
+    () => {
+      localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(todos));
+    },
+    500,
+    [todos]
+  );
 
   const contextData = {
     todos,
