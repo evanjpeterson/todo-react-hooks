@@ -1,3 +1,4 @@
+import styled from "styled-components";
 import { Todo } from "./Todo";
 import { AddTodo } from "./AddTodo";
 import { useTodoContext } from "./TodoProvider";
@@ -6,7 +7,7 @@ export const TodoList = () => {
   const { todos, setTodos } = useTodoContext();
 
   return (
-    <ul>
+    <List>
       <li>
         <AddTodo />
       </li>
@@ -27,6 +28,12 @@ export const TodoList = () => {
           />
         </li>
       ))}
-    </ul>
+    </List>
   );
 };
+
+const List = styled.ul`
+  list-style-type: none;
+  padding: 0;
+  width: 100%;
+`;

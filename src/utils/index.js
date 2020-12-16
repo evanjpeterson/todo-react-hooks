@@ -1,4 +1,5 @@
 import { useCallback, useEffect } from "react";
+export { default as reportWebVitals } from "./reportWebVitals";
 
 // credit to: https://stackoverflow.com/a/56767883/14489279
 // eslint-disable-next-line

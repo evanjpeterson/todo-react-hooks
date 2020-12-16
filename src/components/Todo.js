@@ -1,4 +1,6 @@
 import { useState, useEffect, useRef } from "react";
+import styled from "styled-components";
+import { colors } from "../styles";
 
 export const Todo = ({ todo, onTodoEdit, onTodoDelete }) => {
   const { title, completed } = todo;
@@ -42,27 +44,43 @@ export const Todo = ({ todo, onTodoEdit, onTodoDelete }) => {
   };
 
   return (
-    <div>
-      <div onClick={toggleCompleted}>{completed ? "🙆‍♂️ " : "️️🙅‍♀️ "}</div>
-      {isEditing ? (
-        <form onSubmit={handleEditModeSubmit}>
-          <input
-            type="text"
-            value={title}
-            onChange={editTitle}
-            onBlur={exitEditMode}
-            onKeyUp={({ key }) => {
-              if (key === "Escape") {
-                exitEditMode();
-              }
-            }}
-            ref={titleInputEl}
-          />
-        </form>
-      ) : (
-        <span onClick={enterEditMode}>{title || "<no title>"}</span>
-      )}
+    <Tile>
+      <Info>
+        <div onClick={toggleCompleted}>{completed ? "🙆‍♂️ " : "️️🙅‍♀️ "}</div>
+        {isEditing ? (
+          <form onSubmit={handleEditModeSubmit}>
+            <input
+              type="text"
+              value={title}
+              onChange={editTitle}
+              onBlur={exitEditMode}
+              onKeyUp={({ key }) => {
+                if (key === "Escape") {
+                  exitEditMode();
+                }
+              }}
+              ref={titleInputEl}
+            />
+          </form>
+        ) : (
+          <span onClick={enterEditMode}>{title || "<no title>"}</span>
+        )}
+      </Info>
       <div onClick={onTodoDelete}>{"🗑"}</div>
-    </div>
+    </Tile>
   );
 };
+
+const Tile = styled.div`
+  border: 1px solid ${colors.lightGrey};
+  border-radius: 0.5rem;
+  padding: 1.5rem;
+  box-shadow: 2px 2px 2px ${colors.lightGrey};
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 16px;
+`;
+
+const Info = styled.div`
+  display: flex;
+`;
